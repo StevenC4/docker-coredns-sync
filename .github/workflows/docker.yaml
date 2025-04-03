@@ -3,7 +3,7 @@ name: Publish Docker image
 on:
   push:
     tags:
-      - 'v*.*.*'    # e.g., v1.2.3
+      - 'v*.*.*'  # Triggers on version tags like v1.2.3
 
 env:
   REGISTRY: ghcr.io
@@ -17,11 +17,15 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Set lowercase repo owner
+        id: repo
+        run: echo "owner_lc=${GITHUB_REPOSITORY_OWNER,,}" >> "$GITHUB_OUTPUT"
+
       - name: Log in to GitHub Container Registry
         uses: docker/login-action@v3
         with:
           registry: ${{ env.REGISTRY }}
-          username: ${{ github.actor }}
+          username: ${{ steps.repo.outputs.owner_lc }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Extract version from tag
@@ -39,8 +43,9 @@ jobs:
         with:
           context: .
           push: true
+          platforms: linux/amd64,linux/arm6
           tags: |
-            ghcr.io/${{ github.repository_owner || 'youruser' }}/docker-coredns-sync:${{ steps.extract_version.outputs.version }}
-            ghcr.io/${{ github.repository_owner || 'youruser' }}/docker-coredns-sync:${{ steps.extract_version.outputs.major }}.${{ steps.extract_version.outputs.minor }}
-            ghcr.io/${{ github.repository_owner || 'youruser' }}/docker-coredns-sync:${{ steps.extract_version.outputs.major }}
-            ghcr.io/${{ github.repository_owner || 'youruser' }}/docker-coredns-sync:latest
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:${{ steps.extract_version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:${{ steps.extract_version.outputs.major }}.${{ steps.extract_version.outputs.minor }}
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:${{ steps.extract_version.outputs.major }}
+            ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:latest
