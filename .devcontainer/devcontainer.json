@@ -1,48 +1,51 @@
 {
-    "name": "docker-coredns-sync",
-    "build": {
-        "context": "..",
-        "dockerfile": "../Dockerfile",
-        "target": "dev"
+  "name": "docker-coredns-sync",
+  "build": {
+    "context": "..",
+    "dockerfile": "../Dockerfile",
+    "target": "dev"
+  },
+  "runArgs": [
+    "--cap-add=SYS_PTRACE",
+    "--security-opt", "seccomp=unconfined",
+    "-p", "5678:5678"
+  ],
+  "features": {
+    "ghcr.io/devcontainers/features/common-utils:2": {
+      "installZsh": true,
+      "installOhMyZsh": true,
+      "installOhMyZshConfig": true
     },
-    "runArgs": [
-        "--cap-add=SYS_PTRACE",
-        "--security-opt", "seccomp=unconfined",
-        "-p", "5678:5678"
-    ],
-    "features": {
-        "ghcr.io/devcontainers/features/common-utils:2": {
-			"installZsh": true,
-			"installOhMyZsh": true,
-			"installOhMyZshConfig": true
-		},
-        "ghcr.io/devcontainers/features/github-cli:1": {},
-        "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:2.0.0": {},
-        "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
-        "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
-    },
-    "customizations": {
-        "vscode": {
-            "settings": {
-                "editor.tabSize": 4,
-                "terminal.integrated.defaultProfile.linux": "zsh",
-                "python.defaultInterpreterPath": "/usr/local/bin/python3"
-            },
-            "extensions": [
-                "eamodio.gitlens",
-                "esbenp.prettier-vscode",
-                "github.vscode-github-actions",
-                "mhutchie.git-graph",
-                "ms-azuretools.vscode-docker",
-                "ms-python.python",
-                "ms-python.vscode-pylance",
-                "oderwat.indent-rainbow",
-                "sourcegraph.cody-ai"
-            ]
-        }
-    },
-    "postCreateCommand": "pip install --no-cache-dir -r requirements.txt && pip install debugpy",
-    "mounts": [
-        "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"
-    ]
+    "ghcr.io/devcontainers/features/github-cli:1": {},
+    "ghcr.io/mikaello/devcontainer-features/modern-shell-utils:2.0.0": {},
+    "ghcr.io/devcontainers-contrib/features/pre-commit:2": {},
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
+  },
+  "customizations": {
+    "vscode": {
+      "settings": {
+        "editor.tabSize": 4,
+        "terminal.integrated.defaultProfile.linux": "zsh",
+        "python.defaultInterpreterPath": "/usr/local/bin/python3"
+      },
+      "extensions": [
+        "eamodio.gitlens",
+        "esbenp.prettier-vscode",
+        "github.vscode-github-actions",
+        "mhutchie.git-graph",
+        "ms-azuretools.vscode-docker",
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "oderwat.indent-rainbow",
+        "sourcegraph.cody-ai"
+      ]
+    }
+  },
+  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt && pip install debugpy",
+  "mounts": [
+    "source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind",
+    "source=${localEnv:HOME}/.ssh,target=/home/vscode/.ssh,type=bind,consistency=cached",
+    "source=${localEnv:HOME}/.gitconfig,target=/home/vscode/.gitconfig,type=bind,consistency=cached"
+  ],
+  "remoteUser": "vscode"
 }
