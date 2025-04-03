@@ -49,15 +49,15 @@ You can define multiple A or CNAME records by appending numeric indices:
 
 Set these to configure sync behavior:
 
-Variable	Description	Default
-HOST_IP	Default IP for A records	127.0.0.1
-HOSTNAME	Unique host identifier	your-hostname
-ETCD_HOST	etcd host	localhost
-ETCD_PORT	etcd port	2379
-ETCD_PATH_PREFIX	etcd base key path for DNS records	/skydns
-DOCKER_LABEL_PREFIX	Label namespace to use (e.g. coredns)	coredns
-LOG_LEVEL	Logging level (DEBUG, INFO, etc.)	INFO
-
+| Variable | Description | Default |
+| --- | --- | --- |
+| `HOST_IP` | Default IP for A records | `127.0.0.1` |
+| `HOSTNAME` | Unique host identifier | *your-hostname* |
+| `ETCD_HOST` | etcd host | `localhost` |
+| `ETCD_PORT` | etcd port | `2379` |
+| `ETCD_PATH_PREFIX` | etcd base key path for DNS records | `/skydns` |
+| `DOCKER_LABEL_PREFIX` | Label namespace to use (e.g. `coredns`) | `coredns` |
+| `LOG_LEVEL` | Logging level (**DEBUG**, **INFO**, etc.) | **INFO** |
 ---
 
 ## etcd Record Format

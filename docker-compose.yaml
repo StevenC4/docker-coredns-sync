@@ -1,9 +1,9 @@
+version: "3.8"
+
 services:
-  docker-coredns-sync:
-    build: .
-    container_name: docker-coredns-sync
+  coredns-sync:
+    image: ghcr.io/StevenC4/docker-coredns-sync:latest
     restart: unless-stopped
-    network_mode: host
     env_file:
       - .env
     volumes:
