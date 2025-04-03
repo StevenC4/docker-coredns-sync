@@ -1,6 +1,7 @@
 services:
-  coredns-sync:
+  docker-coredns-sync:
     image: ghcr.io/stevenc4/docker-coredns-sync:latest
+    container_name: docker-coredns-sync
     restart: unless-stopped
     env_file:
       - .env
