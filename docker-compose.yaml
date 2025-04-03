@@ -2,7 +2,7 @@ version: "3.8"
 
 services:
   coredns-sync:
-    image: ghcr.io/StevenC4/docker-coredns-sync:latest
+    image: ghcr.io/stevenc4/docker-coredns-sync:latest
     restart: unless-stopped
     env_file:
       - .env
