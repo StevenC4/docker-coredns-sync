@@ -48,7 +48,7 @@ jobs:
         with:
           context: .
           push: true
-          platforms: linux/amd64,linux/arm6
+          platforms: linux/amd64,linux/arm64
           tags: |
             ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:${{ steps.extract_version.outputs.version }}
             ${{ env.REGISTRY }}/${{ steps.repo.outputs.owner_lc }}/${{ env.IMAGE_NAME }}:${{ steps.extract_version.outputs.major }}.${{ steps.extract_version.outputs.minor }}
