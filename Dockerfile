@@ -1,6 +1,6 @@
 FROM python:3.11-slim AS base
 WORKDIR /app
-LABEL org.opencontainers.image.source="https://github.com/StevenC4/docker-coredns-sync"
+LABEL org.opencontainers.image.source https://github.com/StevenC4/docker-coredns-sync
 ENV PYTHONUNBUFFERED=1 \
     PYTHONDONTWRITEBYTECODE=1
 COPY requirements.txt ./
