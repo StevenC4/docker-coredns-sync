@@ -1,4 +1,4 @@
-.PHONY: build build-dev push up down init-env release
+.PHONY: build build-dev push up down init-env release unrelease
 
 PROJECT_NAME := docker-coredns-sync
 IMAGE := ghcr.io/$(shell echo $(USER) | tr '[:upper:]' '[:lower:]')/$(PROJECT_NAME)
@@ -32,3 +32,8 @@ release:
 	@if [ -z "$(VERSION)" ]; then echo "VERSION is not set"; exit 1; fi
 	git tag v$(VERSION)
 	git push origin v$(VERSION)
+
+unrelease:
+	@if [ -z "$(VERSION)" ]; then echo "VERSION is not set"; exit 1; fi
+	git tag -d v$(VERSION)
+	git push --delete origin v$(VERSION)

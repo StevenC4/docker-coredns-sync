@@ -6,8 +6,9 @@ on:
       - 'v*.*.*'  # e.g. v0.1.0
 
 env:
+  env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: docker-coredns-sync
+  IMAGE_NAME: stevenc4/docker-coredns-sync
 
 jobs:
   build-and-push:
@@ -52,14 +53,14 @@ jobs:
           push: true
           provenance: true
           tags: |
-            ghcr.io/${{ github.repository_owner }}/docker-coredns-sync:${{ steps.version.outputs.version }}
-            ghcr.io/${{ github.repository_owner }}/docker-coredns-sync:${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}
-            ghcr.io/${{ github.repository_owner }}/docker-coredns-sync:${{ steps.version.outputs.major }}
-            ghcr.io/${{ github.repository_owner }}/docker-coredns-sync:latest
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.version }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.major }}.${{ steps.version.outputs.minor }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ steps.version.outputs.major }}
+            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:latest
 
       - name: Generate artifact attestation
         uses: actions/attest-build-provenance@v2
         with:
-          subject-name: ghcr.io/${{ github.repository_owner }}/docker-coredns-sync
+          subject-name: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           subject-digest: ${{ steps.push.outputs.digest }}
           push-to-registry: true
