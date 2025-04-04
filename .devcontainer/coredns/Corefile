@@ -1,0 +1,13 @@
+.:5336 {
+    etcd domain.local {
+        stubzones
+        path /skydns
+        endpoint http://etcd:2379
+    }
+
+    errors
+    health
+    prometheus :9153
+    cache 30
+    forward . /etc/resolv.conf
+}

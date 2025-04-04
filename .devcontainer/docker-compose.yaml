@@ -1,0 +1,50 @@
+version: '3.8'
+
+services:
+  docker-coredns-sync-dev:
+    container_name: docker-coredns-sync-dev
+    build:
+      context: ..
+      dockerfile: ./Dockerfile
+      target: dev
+    volumes:
+      - ../:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+      - ../coredns:/etc/coredns:ro
+    env_file:
+      - .env
+    environment:
+      - ETCD_URL=http://etcd
+      - ETCD_PATH_PREFIX=/v2/keys/skydns
+    depends_on:
+      - etcd
+      - coredns
+    ports:
+      - "5678:5678"  # For debugpy or other dev services
+
+  etcd:
+    image: bitnami/etcd:latest
+    container_name: etcd
+    environment:
+      - ALLOW_NONE_AUTHENTICATION=yes
+      - ETCD_ADVERTISE_CLIENT_URLS=http://etcd:2379
+      - ETCD_LISTEN_CLIENT_URLS=http://0.0.0.0:2379
+      - ETCD_LISTEN_PEER_URLS=http://0.0.0.0:2380
+      - ETCD_INITIAL_ADVERTISE_PEER_URLS=http://etcd:2380
+      - ETCD_INITIAL_CLUSTER=etcd=http://etcd:2380
+      - ETCD_INITIAL_CLUSTER_STATE=new
+      - ETCD_NAME=etcd
+    ports:
+      - "2379:2379"
+      - "2380:2380"
+    volumes:
+      - ./etcd:/bitnami/etcd
+
+  coredns:
+    image: coredns/coredns:1.12.1
+    container_name: coredns
+    command: -conf /etc/coredns/Corefile
+    volumes:
+      - ../coredns:/etc/coredns:ro
+    ports:
+      - "5336:5336/udp"
